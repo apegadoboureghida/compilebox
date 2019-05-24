@@ -96,6 +96,7 @@ function runWithTests(obj, res) {
         }
         else {
             res.send({ error: err });
+            res.set("Connection", "close");
         }
     });
 }
