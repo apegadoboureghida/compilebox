@@ -82,23 +82,25 @@ app.post('/submit', bruteforce.prevent, async function (req, res) {
                 for (let i = 0; i < testKey.length; i++) {
                     let input = testKey[i].input;
                     let output = testKey[i].output;
-                    await compile({
-                        language: languageID,
-                        code: code,
-                        stdin: input
-                    }).run((data, exec_time, err) => {
-                        if (!err) {
-                            if (data == output) {
-                                execTime += exec_time;
+                    setTimeout(() => {
+                        compile({
+                            language: languageID,
+                            code: code,
+                            stdin: input
+                        }).run((data, exec_time, err) => {
+                            if (!err) {
+                                if (data == output) {
+                                    execTime += exec_time;
+                                }
+                                else {
+                                    res.send(i + "/" + testKey.length + ";" + execTime);
+                                }
                             }
                             else {
-                                res.send(i + "/" + testKey.length + ";" + execTime);
+                                res.send(err);
                             }
-                        }
-                        else {
-                            res.send(err);
-                        }
-                    });
+                        });
+                    }, 3000);
                 }
                 res.send(testKey.length + "/" + testKey.length + ";" + execTime);
             }
