@@ -81,6 +81,7 @@ function runWithTests(obj, res) {
         stdin: input
     }).run((data, exec_time, err) => {
         if (!err) {
+            console.log("actual = " + data + "; expected = " + output);
             if (data == output) {
                 obj.execTime += exec_time;
                 obj.finished++;
@@ -117,6 +118,7 @@ app.post('/submit', bruteforce.prevent, async function (req, res) {
         if (challenge != undefined) {
             if (challenge.testCases) {
                 obj['testCases'] = challenge.testCases;
+                console.log(JSON.stringify(obj['testCase']));
                 obj['execTime'] = 0;
                 obj['index'] = 0;
                 let testKey = Object.keys(challenge.testCases);
