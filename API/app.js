@@ -91,12 +91,13 @@ function runWithTests(obj, res) {
                 console.log("Failed: " + res.headersSent);
                 if (!res.headersSent) {
                     res.send({ type: "failed", id: i, time: obj.execTime });
+                    res.end();
                 }
             }
         }
         else {
             res.send({ error: err });
-            res.set("Connection", "close");
+            res.end();
         }
     });
 }
