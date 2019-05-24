@@ -65,6 +65,37 @@ app.post('/compile', bruteforce.prevent, function (req, res) {
     });
 });
 
+function onFinishTask(obj, res) {
+    if (obj.finished == obj.testCases.length) {
+        res.send(obj.finished + ";" + obj.execTime);
+    }
+}
+
+function runWithTests(obj, res) {
+    let i = obj.index;
+    let input = obj.testCases[i].input;
+    let output = obj.testCases[i].output;
+    compile({
+        language: obj.languageID,
+        code: obj.code,
+        stdin: input
+    }).run((data, exec_time, err) => {
+        if (!err) {
+            if (data == output) {
+                obj.execTime += exec_time;
+                obj.finished++;
+                onFinishTask(obj, res);
+            }
+            else {
+                res.send(i + ";" + obj.execTime);
+            }
+        }
+        else {
+            res.send(err);
+        }
+    });
+}
+
 app.post('/submit', bruteforce.prevent, async function (req, res) {
     let challengeID = req.body.challengeID;
     let uid = req.body.uid;
@@ -72,37 +103,27 @@ app.post('/submit', bruteforce.prevent, async function (req, res) {
     let languageID = req.body.languageID;
     let displayedName = firebase.getUserName(uid);
 
+    let obj = {
+        code: code,
+        languageID: languageID,
+        challengeID: challengeID,
+        uid: uid,
+        displayedName: displayedName
+    };
+
     // Get challenge from db
     if (firebase.challenges != undefined) {
         let challenge = firebase.challenges[challengeID];
         if (challenge != undefined) {
             if (challenge.testCases) {
-                let execTime = 0;
+                obj['testCases'] = challenge.testCases;
+                obj['execTime'] = 0;
+                obj['index'] = 0;
                 let testKey = Object.keys(challenge.testCases);
                 for (let i = 0; i < testKey.length; i++) {
-                    let input = testKey[i].input;
-                    let output = testKey[i].output;
-                    setTimeout(() => {
-                        compile({
-                            language: languageID,
-                            code: code,
-                            stdin: input
-                        }).run((data, exec_time, err) => {
-                            if (!err) {
-                                if (data == output) {
-                                    execTime += exec_time;
-                                }
-                                else {
-                                    res.send(i + "/" + testKey.length + ";" + execTime);
-                                }
-                            }
-                            else {
-                                res.send(err);
-                            }
-                        });
-                    }, 3000);
+                    obj['index'] = i;
+                    runWithTests(obj, res);
                 }
-                res.send(testKey.length + "/" + testKey.length + ";" + execTime);
             }
             else {
                 res.send("No testcases");
