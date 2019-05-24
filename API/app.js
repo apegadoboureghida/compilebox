@@ -84,7 +84,7 @@ function runWithTests(obj, res) {
         if (!err) {
             console.log("actual = " + data + "; expected = " + output);
             if (data.toString() == output.toString()) {
-                obj.execTime += exec_time;
+                obj.execTime += parseFloat(exec_time.trim());
                 obj.finished++;
                 onFinishTask(obj, res);
             }
