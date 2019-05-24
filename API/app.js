@@ -67,7 +67,7 @@ app.post('/compile', bruteforce.prevent, function (req, res) {
 
 function onFinishTask(obj, res) {
     if (obj.finished == obj.testCases.length) {
-        res.write(obj.finished + ";" + obj.execTime);
+        res.send({ passed: obj.finished, time: obj.execTime });
     }
 }
 
@@ -82,17 +82,17 @@ function runWithTests(obj, res) {
     }).run((data, exec_time, err) => {
         if (!err) {
             console.log("actual = " + data + "; expected = " + output);
-            if (data == output) {
+            if (data.toString() == output.toString()) {
                 obj.execTime += exec_time;
                 obj.finished++;
                 onFinishTask(obj, res);
             }
             else {
-                res.write(i + ";" + obj.execTime);
+                res.send({ id: i, time: obj.execTime });
             }
         }
         else {
-            res.write(err);
+            res.send({ error: err });
         }
     });
 }
@@ -122,6 +122,7 @@ app.post('/submit', bruteforce.prevent, async function (req, res) {
                 console.log(JSON.stringify(obj['testCase']));
                 obj['execTime'] = 0;
                 obj['index'] = 0;
+                obj['finished'] = 0;
                 let testKey = Object.keys(challenge.testCases);
                 for (let i = 0; i < testKey.length; i++) {
                     obj['index'] = i;
@@ -129,15 +130,15 @@ app.post('/submit', bruteforce.prevent, async function (req, res) {
                 }
             }
             else {
-                res.write("No testcases");
+                res.send({ type: "error", message: "No testcases" });
             }
         }
         else {
-            res.write("Challenge not found");
+            res.send({ type: "error", message: "Challenge not found" });
         }
     }
     else {
-        res.write("Cannot get challenges");
+        res.send({ type: "error", message: "Cannot get challenges" });
     }
 });
 
