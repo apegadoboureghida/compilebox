@@ -96,8 +96,10 @@ function runWithTests(obj, res) {
             }
         }
         else {
-            res.send({ error: err });
-            res.end();
+            if (!res.headersSent) {
+                res.send({ error: err });
+                res.end();
+            }
         }
     });
 }
