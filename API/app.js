@@ -75,6 +75,7 @@ function runWithTests(obj, res) {
     let i = obj.index;
     let input = obj.testCases[i].input;
     let output = obj.testCases[i].output;
+    console.log("Testcase #" + i + ": IN: " + input + "; OUT: " + output);
     compile({
         language: obj.languageID,
         code: obj.code,
