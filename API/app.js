@@ -76,9 +76,9 @@ app.post('/submit', bruteforce.prevent, function (req, res) {
     if (firebase.challenges != undefined) {
         let challenge = firebase.challenges[challengeID];
         if (challenge != undefined) {
-            if (challenge.testcases) {
+            if (challenge.testCases) {
                 let execTime = 0;
-                let testKey = Object.keys(challenge.testcases);
+                let testKey = Object.keys(challenge.testCases);
                 for (let i = 0; i < testKey.length; i++) {
                     let input = testKey[i].input;
                     let output = testKey[i].output;
