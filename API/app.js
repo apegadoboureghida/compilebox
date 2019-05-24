@@ -1,6 +1,6 @@
 /*
         *File: app.js
-        *Author: Asad Memon / Osman Ali Mian
+        *Author: Asad Memon / Osman Ali Mian / Nguyen Tuan Kiet
         *Last Modified: 5th June 2014
         *Revised on: 30th June 2014 (Introduced Express-Brute for Bruteforce protection)
 */
@@ -13,23 +13,25 @@ var http = require('http');
 var arr = require('./compilers');
 var sandBox = require('./DockerSandbox');
 var bodyParser = require('body-parser');
+var firebaseApp = require('./firebase');
 var app = express();
 var server = http.createServer(app);
-var port=8080;
+var port = 80;
 
 
 var ExpressBrute = require('express-brute');
 var store = new ExpressBrute.MemoryStore(); // stores state locally, don't use this in production
-var bruteforce = new ExpressBrute(store,{
+var bruteforce = new ExpressBrute(store, {
     freeRetries: 50,
     lifetime: 3600
 });
 
+var firebase = new firebaseApp();
+
 app.use(express.static(__dirname));
 app.use(bodyParser());
 
-app.all('*', function(req, res, next) 
-{
+app.all('*', function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
@@ -42,38 +44,80 @@ function random(size) {
     return require("crypto").randomBytes(size).toString('hex');
 }
 
+function compile(obj) {
+    var language = obj.language;
+    var code = obj.code;
+    var stdin = obj.stdin;
 
-app.post('/compile',bruteforce.prevent,function(req, res) 
-{
-
-    var language = req.body.language;
-    var code = req.body.code;
-    var stdin = req.body.stdin;
-   
-    var folder= 'temp/' + random(10); //folder in which the temporary folder will be saved
-    var path=__dirname+"/"; //current working path
-    var vm_name='virtual_machine'; //name of virtual machine that we want to execute
-    var timeout_value=20;//Timeout Value, In Seconds
+    var folder = 'temp/' + random(10); //folder in which the temporary folder will be saved
+    var path = __dirname + "/"; //current working path
+    var vm_name = 'virtual_machine'; //name of virtual machine that we want to execute
+    var timeout_value = 20;//Timeout Value, In Seconds
 
     //details of this are present in DockerSandbox.js
-    var sandboxType = new sandBox(timeout_value,path,folder,vm_name,arr.compilerArray[language][0],arr.compilerArray[language][1],code,arr.compilerArray[language][2],arr.compilerArray[language][3],arr.compilerArray[language][4],stdin);
+    return new sandBox(timeout_value, path, folder, vm_name, arr.compilerArray[language][0], arr.compilerArray[language][1], code, arr.compilerArray[language][2], arr.compilerArray[language][3], arr.compilerArray[language][4], stdin);
+}
 
-
-    //data will contain the output of the compiled/interpreted code
-    //the result maybe normal program output, list of error messages or a Timeout error
-    sandboxType.run(function(data,exec_time,err)
-    {
+app.post('/compile', bruteforce.prevent, function (req, res) {
+    compile(req.body).run(function (data, exec_time, err) {
         //console.log("Data: received: "+ data)
-    	res.send({output:data, langid: language,code:code, errors:err, time:exec_time});
+        res.send({ output: data, langid: language, code: code, errors: err, time: exec_time });
     });
-   
 });
 
+app.post('/submit', bruteforce.prevent, function (req, res) {
+    let challengeID = req.body.challengeID;
+    let uid = req.body.uid;
+    let code = req.body.code;
+    let languageID = req.body.languageID;
+    let displayedName = await firebase.getUserName(uid);
 
-app.get('/', function(req, res) 
-{
+    // Get challenge from db
+    if (firebase.challenges != undefined) {
+        let challenge = firebase.challenges[challengeID];
+        if (challenge != undefined) {
+            if (challenge.testcases != undefined) {
+                let execTime = 0;
+                let testKey = Object.keys(challenge.testcases);
+                for (let i = 0; i < testKey.length; i++) {
+                    let input = testKey[i].input;
+                    let output = testKey[i].output;
+                    await compile({
+                        language: languageID,
+                        code: code,
+                        stdin: input
+                    }).run((data, exec_time, err) => {
+                        if (!err) {
+                            if (data == output) {
+                                execTime += exec_time;
+                            }
+                            else {
+                                res.send(i + "/" + testKey.length + ";" + execTime);
+                            }
+                        }
+                        else {
+                            res.send(err);
+                        }
+                    });
+                }
+                res.send(testKey.length + "/" + testKey.length + ";" + execTime);
+            }
+            else {
+                res.send("No testcases");
+            }
+        }
+        else {
+            res.send("Challenge not found");
+        }
+    }
+    else {
+        res.send("Cannot get challenges");
+    }
+});
+
+app.get('/', function (req, res) {
     res.sendfile("./index.html");
 });
 
-console.log("Listening at "+port)
+console.log("Listening at " + port)
 server.listen(port);

@@ -1,12 +1,15 @@
- {
+{
   "name": "API",
   "version": "1.0.0",
   "main": "app.js",
   "dependencies": {
+    "body-parser": "*",
+    "exports": "*",
     "express": "4.*",
-    "body-parser" : "*",
-    "express-brute":"*",
-    "exports": "*"
+    "express-brute": "*",
+    "firebase-admin": "^8.0.0",
+    "install": "^0.12.2",
+    "npm": "^6.9.0"
   },
   "author": "Osman Ali",
   "license": "MIT"
