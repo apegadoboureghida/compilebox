@@ -52,10 +52,10 @@ function compile(obj) {
     var folder = 'temp/' + random(10); //folder in which the temporary folder will be saved
     var path = __dirname + "/"; //current working path
     var vm_name = 'virtual_machine'; //name of virtual machine that we want to execute
-    var timeout_value = 60;//Timeout Value, In Seconds
+    var timeout_value = 3600;//Timeout Value, In Seconds
 
     //details of this are present in DockerSandbox.js
-    return new sandBox(timeout_value, path, folder, vm_name, arr.compilerArray[language][0], arr.compilerArray[language][1], code, arr.compilerArray[language][2], arr.compilerArray[language][3], arr.compilerArray[language][4], stdin, stdin);
+    return new sandBox(timeout_value, path, folder, vm_name, arr.compilerArray[language][0], arr.compilerArray[language][1], code, arr.compilerArray[language][2], arr.compilerArray[language][3], arr.compilerArray[language][4], stdin);
 }
 
 app.post('/compile', bruteforce.prevent, function (req, res) {
@@ -83,7 +83,7 @@ function runWithTests(obj, res) {
     }).run((data, exec_time, err) => {
         if (!err) {
             console.log("actual = " + data + "; expected = " + output);
-            if (data.toString() == output.toString()) {
+            if (data.toString().trim() == output.toString().trim()) {
                 obj.execTime += parseFloat(exec_time.trim());
                 obj.finished++;
                 onFinishTask(obj, res);
