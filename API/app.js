@@ -67,7 +67,7 @@ app.post('/compile', bruteforce.prevent, function (req, res) {
 
 function onFinishTask(obj, res) {
     if (obj.finished == obj.testCases.length) {
-        res.send({ passed: obj.finished, time: obj.execTime });
+        res.send({ type: "success", passed: obj.finished, time: obj.execTime });
     }
 }
 
