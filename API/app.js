@@ -85,6 +85,7 @@ function runWithTests(obj, res) {
             if (data.toString() == output.toString()) {
                 obj.execTime += exec_time;
                 obj.finished++;
+                console.log(res.headersSent);
                 onFinishTask(obj, res);
             }
             else {
