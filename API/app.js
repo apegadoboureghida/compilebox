@@ -88,7 +88,9 @@ function runWithTests(obj, res) {
                 onFinishTask(obj, res);
             }
             else {
-                res.send({ type: "failed", id: i, time: obj.execTime });
+                if (!res.headerSent) {
+                    res.send({ type: "failed", id: i, time: obj.execTime });
+                }
             }
         }
         else {
