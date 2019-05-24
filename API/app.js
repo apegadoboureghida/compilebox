@@ -65,7 +65,7 @@ app.post('/compile', bruteforce.prevent, function (req, res) {
     });
 });
 
-app.post('/submit', bruteforce.prevent, function (req, res) {
+app.post('/submit', bruteforce.prevent, async function (req, res) {
     let challengeID = req.body.challengeID;
     let uid = req.body.uid;
     let code = req.body.code;
@@ -82,7 +82,7 @@ app.post('/submit', bruteforce.prevent, function (req, res) {
                 for (let i = 0; i < testKey.length; i++) {
                     let input = testKey[i].input;
                     let output = testKey[i].output;
-                    compile({
+                    await compile({
                         language: languageID,
                         code: code,
                         stdin: input
