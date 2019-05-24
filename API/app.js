@@ -85,12 +85,11 @@ function runWithTests(obj, res) {
             if (data.toString() == output.toString()) {
                 obj.execTime += exec_time;
                 obj.finished++;
-                console.log(res.headersSent);
                 onFinishTask(obj, res);
             }
             else {
                 console.log("Failed: " + res.headersSent);
-                if (res.headersSent) {
+                if (!res.headersSent) {
                     res.send({ type: "failed", id: i, time: obj.execTime });
                 }
             }
