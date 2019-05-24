@@ -98,7 +98,7 @@ function runWithTests(obj, res) {
 }
 
 app.post('/submit', bruteforce.prevent, async function (req, res) {
-    //res.setHeader('Content-Type', 'text/html');
+    res.setHeader('Content-Type', 'text/html');
     let challengeID = req.body.challengeID;
     let uid = req.body.uid;
     let code = req.body.code;
@@ -129,15 +129,15 @@ app.post('/submit', bruteforce.prevent, async function (req, res) {
                 }
             }
             else {
-                res.send("No testcases");
+                res.write("No testcases");
             }
         }
         else {
-            res.send("Challenge not found");
+            res.write("Challenge not found");
         }
     }
     else {
-        res.send("Cannot get challenges");
+        res.write("Cannot get challenges");
     }
 });
 
