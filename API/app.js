@@ -67,6 +67,7 @@ app.post('/compile', bruteforce.prevent, function (req, res) {
 
 function onFinishTask(obj, res) {
     if (obj.finished == obj.testCases.length) {
+        firebase.writeHistory(obj);
         res.send({ type: "success", passed: obj.finished, time: obj.execTime });
     }
 }
@@ -90,13 +91,13 @@ function runWithTests(obj, res) {
             }
             else {
                 if (!res.headersSent) {
-                    res.send({ type: "failed", id: i, time: obj.execTime });
+                    res.send({ type: "failed", id: i, time: obj.execTime, output: data });
                 }
             }
         }
         else {
             if (!res.headersSent) {
-                res.send({ error: err });
+                res.send({ type: "error", error: err });
             }
         }
     });

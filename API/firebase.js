@@ -28,8 +28,11 @@ FirebaseApp.prototype.getUserName = function (uid) {
     return name;
 }
 
-FirebaseApp.prototype.writeHistory = function (challengeID, result) {
-
+FirebaseApp.prototype.writeHistory = function (obj) {
+    if (obj.uid != undefined && obj.displayedName != undefined) {
+        this.db.ref("challenges/" + obj.challengeID + "/history/" + obj.uid).set(obj);
+        this.db.ref("users/" + obj.uid + "/history/" + obj.challengeID).set(obj);
+    }
 }
 
 module.exports = FirebaseApp;
