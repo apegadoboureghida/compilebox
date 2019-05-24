@@ -70,7 +70,7 @@ app.post('/submit', bruteforce.prevent, function (req, res) {
     let uid = req.body.uid;
     let code = req.body.code;
     let languageID = req.body.languageID;
-    let displayedName = await firebase.getUserName(uid);
+    let displayedName = firebase.getUserName(uid);
 
     // Get challenge from db
     if (firebase.challenges != undefined) {
@@ -82,7 +82,7 @@ app.post('/submit', bruteforce.prevent, function (req, res) {
                 for (let i = 0; i < testKey.length; i++) {
                     let input = testKey[i].input;
                     let output = testKey[i].output;
-                    await compile({
+                    compile({
                         language: languageID,
                         code: code,
                         stdin: input

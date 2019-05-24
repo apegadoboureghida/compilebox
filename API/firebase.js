@@ -20,11 +20,11 @@ var FirebaseApp = function () {
 
 }
 
-FirebaseApp.prototype.getUserName = async function (uid) {
+FirebaseApp.prototype.getUserName = function (uid) {
     let name = "";
-    await this.instance.auth().getUser(uid).then(value => {
+    this.instance.auth().getUser(uid).then(value => {
         name = value.displayName;
-    })
+    });
     return name;
 }
 
