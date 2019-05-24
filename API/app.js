@@ -108,14 +108,12 @@ app.post('/submit', bruteforce.prevent, async function (req, res) {
     let uid = req.body.uid;
     let code = req.body.code;
     let languageID = req.body.languageID;
-    let displayedName = firebase.getUserName(uid);
 
     let obj = {
         code: code,
         languageID: languageID,
         challengeID: challengeID,
-        uid: uid,
-        displayedName: displayedName
+        uid: uid
     };
 
     // Get challenge from db
