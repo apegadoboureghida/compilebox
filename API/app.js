@@ -98,6 +98,7 @@ function runWithTests(obj, res) {
 }
 
 app.post('/submit', bruteforce.prevent, async function (req, res) {
+    res.set('Content-Type', 'text/html');
     let challengeID = req.body.challengeID;
     let uid = req.body.uid;
     let code = req.body.code;
