@@ -61,7 +61,7 @@ function compile(obj) {
 app.post('/compile', bruteforce.prevent, function (req, res) {
     compile(req.body).run(function (data, exec_time, err) {
         //console.log("Data: received: "+ data)
-        res.send({ output: data, code: code, errors: err, time: exec_time });
+        res.send({ output: data, errors: err, time: exec_time });
     });
 });
 
