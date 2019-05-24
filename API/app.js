@@ -67,7 +67,7 @@ app.post('/compile', bruteforce.prevent, function (req, res) {
 
 function onFinishTask(obj, res) {
     if (obj.finished == obj.testCases.length) {
-        res.send(obj.finished + ";" + obj.execTime);
+        res.write(obj.finished + ";" + obj.execTime);
     }
 }
 
@@ -88,17 +88,17 @@ function runWithTests(obj, res) {
                 onFinishTask(obj, res);
             }
             else {
-                res.send(i + ";" + obj.execTime);
+                res.write(i + ";" + obj.execTime);
             }
         }
         else {
-            res.send(err);
+            res.write(err);
         }
     });
 }
 
 app.post('/submit', bruteforce.prevent, async function (req, res) {
-    res.setHeader('Content-Type', 'text/html');
+    //res.setHeader('Content-Type', 'text/html');
     let challengeID = req.body.challengeID;
     let uid = req.body.uid;
     let code = req.body.code;
