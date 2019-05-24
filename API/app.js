@@ -88,7 +88,7 @@ function runWithTests(obj, res) {
                 onFinishTask(obj, res);
             }
             else {
-                res.send({ id: i, time: obj.execTime });
+                res.send({ type: "failed", id: i, time: obj.execTime });
             }
         }
         else {
@@ -98,7 +98,6 @@ function runWithTests(obj, res) {
 }
 
 app.post('/submit', bruteforce.prevent, async function (req, res) {
-    res.setHeader('Content-Type', 'text/html');
     let challengeID = req.body.challengeID;
     let uid = req.body.uid;
     let code = req.body.code;
