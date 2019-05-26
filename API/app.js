@@ -17,8 +17,18 @@ var bodyParser = require('body-parser');
 var firebaseApp = require('./firebase');
 var app = express();
 var server = http.createServer(app);
+var httpsServer = https.createServer(credentials, app);
 var port = 80;
 
+const privateKey = fs.readFileSync('/etc/letsencrypt/live/yourdomain.com/privkey.pem', 'utf8');
+const certificate = fs.readFileSync('/etc/letsencrypt/live/yourdomain.com/cert.pem', 'utf8');
+const ca = fs.readFileSync('/etc/letsencrypt/live/yourdomain.com/chain.pem', 'utf8');
+
+const credentials = {
+    key: privateKey,
+    cert: certificate,
+    ca: ca
+};
 
 var ExpressBrute = require('express-brute');
 var store = new ExpressBrute.MemoryStore(); // stores state locally, don't use this in production
@@ -153,3 +163,4 @@ app.get('/', function (req, res) {
 
 console.log("Listening at " + port)
 server.listen(port);
+httpsServer.listen(443);
