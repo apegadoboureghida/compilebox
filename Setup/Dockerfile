@@ -18,7 +18,6 @@ RUN apt-get install -y php-cli
 RUN apt-get install -y ruby
 RUN apt-get install -y python
 RUN apt-get install -y mono-xsp mono-xsp4-base
-RUN apt-get install mono-complete
 
 RUN apt-get install -y mono-vbnc
 RUN apt-get install -y npm
