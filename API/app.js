@@ -17,6 +17,7 @@ var bodyParser = require('body-parser');
 var firebaseApp = require('./firebase');
 var app = express();
 var server = http.createServer(app);
+var fs = require('fs');
 
 var port = 80;
 
