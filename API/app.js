@@ -10,6 +10,7 @@
 
 var express = require('express');
 var http = require('http');
+var https = require('https');
 var arr = require('./compilers');
 var sandBox = require('./DockerSandbox');
 var bodyParser = require('body-parser');
@@ -28,7 +29,8 @@ var bruteforce = new ExpressBrute(store, {
 
 var firebase = new firebaseApp();
 
-app.use(express.static(__dirname));
+//app.use(express.static(__dirname));
+app.use(express.static(__dirname, { dotfiles: 'allow' }));
 app.use(bodyParser());
 
 app.all('*', function (req, res, next) {
