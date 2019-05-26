@@ -17,7 +17,7 @@ var bodyParser = require('body-parser');
 var firebaseApp = require('./firebase');
 var app = express();
 var server = http.createServer(app);
-var httpsServer = https.createServer(credentials, app);
+
 var port = 80;
 
 const privateKey = fs.readFileSync('/etc/letsencrypt/live/yourdomain.com/privkey.pem', 'utf8');
@@ -29,6 +29,8 @@ const credentials = {
     cert: certificate,
     ca: ca
 };
+
+var httpsServer = https.createServer(credentials, app);
 
 var ExpressBrute = require('express-brute');
 var store = new ExpressBrute.MemoryStore(); // stores state locally, don't use this in production
