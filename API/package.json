@@ -9,7 +9,8 @@
     "express-brute": "*",
     "firebase-admin": "^8.0.0",
     "install": "^0.12.2",
-    "npm": "^6.9.0"
+    "npm": "^6.9.0",
+    "request": "^2.88.0"
   },
   "author": "Osman Ali",
   "license": "MIT"

@@ -164,6 +164,6 @@ app.get('/', function (req, res) {
     res.sendfile("./index.html");
 });
 
-console.log("Listening at " + port)
+console.log("Listening at " + port);
 server.listen(port);
 httpsServer.listen(443);

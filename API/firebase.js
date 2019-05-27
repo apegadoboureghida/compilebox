@@ -33,6 +33,7 @@ FirebaseApp.prototype.writeHistory = function (obj) {
         this.instance.auth().getUser(obj.uid).then(value => {
             obj.email = value.email;
             obj.displayName = value.displayName;
+            obj.date = Date.now();
             this.db.ref("challenges/" + obj.challengeID + "/history/" + obj.uid).set(obj);
             this.db.ref("users/" + obj.uid + "/history/" + obj.challengeID).set(obj);
         })
