@@ -32,4 +32,4 @@ exports.compilerArray = [["python", "file.py", "", "Python", ""],
 ["/usercode/sql_runner.sh", "file.sql", "", "MYSQL", ""],
 ["perl", "file.pl", "", "Perl", ""],
 ["\'env HOME=/opt/rust /opt/rust/.cargo/bin/rustc\'", "file.rs", "/usercode/a.out", "Rust", "\'-o /usercode/a.out\'"],
-["pc", "file.pas", "/usercode/file.o", "Pascal", ""]];
+["pc", "file.pas", "/usercode/file.o", "Pascal", "-o /usercode/file.o"]];
