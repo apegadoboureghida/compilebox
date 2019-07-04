@@ -56,7 +56,7 @@ FirebaseApp.prototype.getUserList = async function (onFinish) {
 }
 
 FirebaseApp.prototype.createTeam = function (ownerID, obj, onFinish) {
-    this.db.ref('team/').push({ ownerID: ownerID, ...obj }, (error) => {
+    this.db.ref('team/').push({ ownerID: ownerID, ...obj, invitation: 0 }, (error) => {
         if (error) {
             onFinish({ status: 'error', error: error });
         }
@@ -103,8 +103,8 @@ FirebaseApp.prototype.invite = async function (teamID, teamName, ownerName, emai
     let uid = (await this.instance.auth().getUserByEmail(email));
     if (uid != undefined) {
         uid = uid.uid;
-        this.db.ref('users/' + uid + '/invitation/').child(teamID + '/').set({ teamName: teamName, ownerName: ownerName });
-        this.db.ref('team/' + teamID + '/invitation/' + uid).set({ status: 0 });
+        this.db.ref('users/' + uid + '/invitation/').push({ teamID: teamID, teamName: teamName, ownerName: ownerName });
+        this.db.ref('team/' + teamID + '/invitation/').push({ uid: uid });
     }
 }
 
