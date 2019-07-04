@@ -100,9 +100,12 @@ FirebaseApp.prototype.getJoinedTeam = function (uid, onFinish) {
 }
 
 FirebaseApp.prototype.invite = async function (teamID, teamName, ownerName, email) {
-    let uid = (await this.instance.auth().getUserByEmail(email)).uid;
-    this.db.ref('users/' + uid + '/invitation/' + teamID).set({ teamName: teamName, ownerName: ownerName });
-    this.db.ref('team/' + teamID + '/invitation/' + uid).set({ status: 0 });
+    let uid = (await this.instance.auth().getUserByEmail(email));
+    if (uid != undefined) {
+        uid = uid.uid;
+        this.db.ref('users/' + uid + '/invitation/' + teamID).set({ teamName: teamName, ownerName: ownerName });
+        this.db.ref('team/' + teamID + '/invitation/' + uid).set({ status: 0 });
+    }
 }
 
 FirebaseApp.prototype.replyInvitation = function (isAccepted, uid, teamID) {

@@ -192,6 +192,14 @@ app.post('/team/getjoined', bruteforce.prevent, (req, res) => {
     })
 });
 
+app.post('team/invite', bruteforce.prevent, (req, res) => {
+    let teamID = req.body.teamID;
+    let teamName = req.body.teamName;
+    let ownerName = req.body.ownerName;
+    let email = req.body.email;
+    firebase.invite(teamID, teamName, ownerName, email);
+});
+
 console.log("Listening at " + port);
 server.listen(port);
 httpsServer.listen(443);
