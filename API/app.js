@@ -178,7 +178,7 @@ app.post('/team/create', bruteforce.prevent, (req, res) => {
     })
 });
 
-app.get('/team/get', bruteforce.prevent, (req, res) => {
+app.post('/team/get', bruteforce.prevent, (req, res) => {
     let ownerID = req.body.ownerID;
     firebase.getYourTeam(ownerID, (result) => {
         res.send(res);
