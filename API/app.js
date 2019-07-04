@@ -201,7 +201,7 @@ app.post('/team/invite', bruteforce.prevent, (req, res) => {
     res.send('invited');
 });
 
-app.post('team/invitation/reply', bruteforce.prevent, (req, res) => {
+app.post('/team/invitation/reply', bruteforce.prevent, (req, res) => {
     let isAccepted = req.body.isAccepted;
     let uid = req.body.uid;
     let teamID = req.body.teamID;
