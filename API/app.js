@@ -192,7 +192,7 @@ app.post('/team/getjoined', bruteforce.prevent, (req, res) => {
     })
 });
 
-app.post('team/invite', bruteforce.prevent, (req, res) => {
+app.post('/team/invite', bruteforce.prevent, (req, res) => {
     let teamID = req.body.teamID;
     let teamName = req.body.teamName;
     let ownerName = req.body.ownerName;
