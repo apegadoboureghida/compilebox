@@ -45,7 +45,7 @@ FirebaseApp.prototype.getUserList = async function (onFinish) {
     this.db.ref("users/").on('value', async (snapshot) => {
         let data = snapshot.val();
         let emailList = [];
-        for (let i = 0; i < data.length(); i++) {
+        for (let i = 0; i < data.length; i++) {
             let usr = await this.instance.auth().getUser(data[i])
             emailList.push(usr.email)
         }
