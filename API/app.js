@@ -205,7 +205,7 @@ app.post('/team/invitation/reply', bruteforce.prevent, (req, res) => {
     let isAccepted = req.body.isAccepted;
     let uid = req.body.uid;
     let teamID = req.body.teamID;
-    firebase.invite(isAccepted, uid, teamID);
+    firebase.replyInvitation(isAccepted, uid, teamID);
     res.send('replied');
 })
 
