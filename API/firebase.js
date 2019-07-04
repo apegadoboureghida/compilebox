@@ -82,8 +82,36 @@ FirebaseApp.prototype.getYourTeam = function (ownerID, onFinish) {
     })
 }
 
-FirebaseApp.prototype.invite = function (obj) {
-
+FirebaseApp.prototype.getJoinedTeam = function (uid, onFinish) {
+    this.db.ref('team/').on('value', (snapshot) => {
+        let data = snapshot.val();
+        let keys = Object.keys(data);
+        let result = [];
+        for (let i = 0; i < keys.length; i++) {
+            if (data[keys[i]]['members'] != undefined) {
+                let listOfMember = Object.keys(data[keys[i]]['members']);
+                if (listOfMember.indexOf(uid) != -1) {
+                    result.push(keys[i]);
+                }
+            }
+        }
+        onFinish(result);
+    })
 }
+
+FirebaseApp.prototype.invite = async function (teamID, teamName, ownerName, email) {
+    let uid = (await this.instance.auth().getUserByEmail(email)).uid;
+    this.db.ref('users/' + uid + '/invitation/' + teamID).set({ teamName: teamName, ownerName: ownerName });
+    this.db.ref('team/' + teamID + '/invitation/' + uid).set({ status: 0 });
+}
+
+FirebaseApp.prototype.replyInvitation = function (isAccepted, uid, teamID) {
+    if (isAccepted) {
+        this.db.ref('team/' + teamID + '/members/' + uid).set({ status: 1 });
+    }
+    this.db.ref('team/' + teamID + '/invitation/' + uid).remove();
+    this.db.ref('users/' + uid + '/invitation/' + teamID).remove();
+}
+
 
 module.exports = FirebaseApp;

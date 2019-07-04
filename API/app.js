@@ -183,7 +183,14 @@ app.post('/team/get', bruteforce.prevent, (req, res) => {
     firebase.getYourTeam(ownerID, (result) => {
         res.send(result);
     })
-})
+});
+
+app.post('/team/getjoined', bruteforce.prevent, (req, res) => {
+    let uid = req.body.uid;
+    firebase.getJoinedTeam(uid, (result) => {
+        res.send(result);
+    })
+});
 
 console.log("Listening at " + port);
 server.listen(port);
