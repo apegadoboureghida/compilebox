@@ -165,12 +165,25 @@ app.get('/', function (req, res) {
 });
 
 app.get('/userlist', (req, res) => {
-    let listEmail = []
     firebase.getUserList((data) => {
         res.send(data);
     });
-
 });
+
+app.post('/team/create', bruteforce.prevent, (req, res) => {
+    let ownerID = req.body.ownerID;
+    let data = req.body.data;
+    firebase.createTeam(ownerID, data, (result) => {
+        res.send(result);
+    })
+});
+
+app.get('/team/get', bruteforce.prevent, (req, res) => {
+    let ownerID = req.body.ownerID;
+    firebase.getYourTeam(ownerID, (result) => {
+        res.send(res);
+    })
+})
 
 console.log("Listening at " + port);
 server.listen(port);

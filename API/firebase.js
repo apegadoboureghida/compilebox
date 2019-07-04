@@ -55,6 +55,31 @@ FirebaseApp.prototype.getUserList = async function (onFinish) {
     })
 }
 
+FirebaseApp.prototype.createTeam = function (ownerID, obj, onFinish) {
+    this.db.ref('team/').push({ ownerID: ownerID, ...obj }, (error) => {
+        if (error) {
+            onFinish({ status: 'error', error: error });
+        }
+        else {
+            onFinish({ status: 'success' });
+        }
+    })
+}
+
+FirebaseApp.prototype.getYourTeam = function (ownerID, onFinish) {
+    this.db.ref('team/').on('value', (snapshot) => {
+        let data = snapshot.val();
+        let keys = Object.keys(data);
+        let result = [];
+        for (let i = 0; i < keys.length; i++) {
+            if (data[keys[i]]['ownerID'] == ownerID) {
+                result.push(keys[i]);
+            }
+        }
+        onFinish(result);
+    })
+}
+
 FirebaseApp.prototype.invite = function (obj) {
 
 }
