@@ -103,8 +103,8 @@ FirebaseApp.prototype.invite = async function (teamID, teamName, ownerName, emai
     let uid = (await this.instance.auth().getUserByEmail(email));
     if (uid != undefined) {
         uid = uid.uid;
-        this.db.ref('users/' + uid + '/invitation/').push({ teamID: teamID, teamName: teamName, ownerName: ownerName });
-        this.db.ref('team/' + teamID + '/invitation/').push({ uid: uid });
+        this.db.ref('users/' + uid + '/invitation/' + teamID).set({ teamName: teamName, ownerName: ownerName });
+        this.db.ref('team/' + teamID + '/invitation/' + uid).set({ status: 0 });
     }
 }
 
