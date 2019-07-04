@@ -71,11 +71,13 @@ FirebaseApp.prototype.getYourTeam = function (ownerID, onFinish) {
         let data = snapshot.val();
         let keys = Object.keys(data);
         let result = [];
+        console.log(keys);
         for (let i = 0; i < keys.length; i++) {
             if (data[keys[i]]['ownerID'] == ownerID) {
                 result.push(keys[i]);
             }
         }
+        console.log(result);
         onFinish(result);
     })
 }
