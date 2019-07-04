@@ -44,10 +44,10 @@ FirebaseApp.prototype.writeHistory = function (obj) {
 FirebaseApp.prototype.getUserList = async function (onFinish) {
     this.db.ref("users/").on('value', async (snapshot) => {
         let data = snapshot.val();
-        console.log(snapshot.val());
+        let uids = Object.keys(data);
         let emailList = [];
-        for (let i = 0; i < data.length; i++) {
-            let usr = await this.instance.auth().getUser(data[i])
+        for (let i = 0; i < uids.length; i++) {
+            let usr = await this.instance.auth().getUser(uids[i])
             emailList.push(usr.email)
         }
         console.log(emailList);
