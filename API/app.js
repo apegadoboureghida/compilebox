@@ -198,6 +198,7 @@ app.post('team/invite', bruteforce.prevent, (req, res) => {
     let ownerName = req.body.ownerName;
     let email = req.body.email;
     firebase.invite(teamID, teamName, ownerName, email);
+    res.send('invited');
 });
 
 console.log("Listening at " + port);
