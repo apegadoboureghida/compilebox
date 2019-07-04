@@ -164,10 +164,12 @@ app.get('/', function (req, res) {
     res.sendfile("./index.html");
 });
 
-app.get('/userlist', async (req, res) => {
+app.get('/userlist', (req, res) => {
     let listEmail = []
-    await firebase.getUserList((data) => this.listEmail = data);
-    res.send(listEmail);
+    firebase.getUserList((data) => {
+        res.send(data);
+    });
+
 });
 
 console.log("Listening at " + port);
