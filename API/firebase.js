@@ -41,4 +41,21 @@ FirebaseApp.prototype.writeHistory = function (obj) {
     }
 }
 
+FirebaseApp.prototype.getUserList = async function (onFinish) {
+    this.db.ref("users/").on('value', (snapshot) => {
+        let data = snapshot.val();
+        let emailList = [];
+        for (let i = 0; i < data.length(); i++) {
+            let usr = await this.instance.auth().getUser(data[i])
+            emailList.push(usr.email)
+        }
+        console.log(emailList);
+        onFinish(emailList);
+    })
+}
+
+FirebaseApp.prototype.invite = function (obj) {
+
+}
+
 module.exports = FirebaseApp;

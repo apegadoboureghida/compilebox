@@ -164,6 +164,12 @@ app.get('/', function (req, res) {
     res.sendfile("./index.html");
 });
 
+app.get('/userlist', async (req, res) => {
+    let listEmail = []
+    await firebase.getUserList((data) => this.listEmail = data);
+    res.send(listEmail);
+});
+
 console.log("Listening at " + port);
 server.listen(port);
 httpsServer.listen(443);
