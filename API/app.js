@@ -19,7 +19,7 @@ var app = express();
 var server = http.createServer(app);
 var fs = require('fs');
 
-var port = 8989;
+var port = 8889;
 
 const privateKey = fs.readFileSync('/etc/letsencrypt/live/pm.itsstraining.edu.vn/privkey.pem', 'utf8');
 const certificate = fs.readFileSync('/etc/letsencrypt/live/pm.itsstraining.edu.vn/cert.pem', 'utf8');
