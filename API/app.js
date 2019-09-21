@@ -19,11 +19,11 @@ var app = express();
 var server = http.createServer(app);
 var fs = require('fs');
 
-var port = 80;
+var port = 8989;
 
-const privateKey = fs.readFileSync('/etc/letsencrypt/live/server.codeathon.ml/privkey.pem', 'utf8');
-const certificate = fs.readFileSync('/etc/letsencrypt/live/server.codeathon.ml/cert.pem', 'utf8');
-const ca = fs.readFileSync('/etc/letsencrypt/live/server.codeathon.ml/chain.pem', 'utf8');
+const privateKey = fs.readFileSync('/etc/letsencrypt/live/pm.itsstraining.edu.vn/privkey.pem', 'utf8');
+const certificate = fs.readFileSync('/etc/letsencrypt/live/pm.itsstraining.edu.vn/cert.pem', 'utf8');
+const ca = fs.readFileSync('/etc/letsencrypt/live/pm.itsstraining.edu.vn/chain.pem', 'utf8');
 
 const credentials = {
     key: privateKey,
@@ -67,7 +67,7 @@ function compile(obj) {
     var folder = 'temp/' + random(10); //folder in which the temporary folder will be saved
     var path = __dirname + "/"; //current working path
     var vm_name = 'virtual_machine'; //name of virtual machine that we want to execute
-    var timeout_value = 3600;//Timeout Value, In Seconds
+    var timeout_value = 300;//Timeout Value, In Seconds
 
     //details of this are present in DockerSandbox.js
     return new sandBox(timeout_value, path, folder, vm_name, arr.compilerArray[language][0], arr.compilerArray[language][1], code, arr.compilerArray[language][2], arr.compilerArray[language][3], arr.compilerArray[language][4], stdin);
