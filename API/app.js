@@ -210,5 +210,5 @@ app.post('/team/invitation/reply', bruteforce.prevent, (req, res) => {
 })
 
 console.log("Listening at " + port);
-server.listen(port);
-httpsServer.listen(443);
+//server.listen(port);
+httpsServer.listen(port);
