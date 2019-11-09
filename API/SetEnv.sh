@@ -1,0 +1,1 @@
+export GOOGLE_APPLICATION_CREDENTIALS=codeathon-itss-firebase-adminsdk-0r8ms-c4e5de9ddb.json
